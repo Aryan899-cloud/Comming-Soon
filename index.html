@@ -1,215 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Coming Soon</title>
 <style>
-    :root {
-        --card-bg: rgba(255, 255, 255, 0.05);
-        --border: rgba(255, 255, 255, 0.2);
-    }
+  * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+  body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #0a0a0a; /* simple dark background */
+    color: #fff;
+    text-align: center;
+  }
 
-    body {
-        font-family: Arial, sans-serif;
-        background: #0a0a0a;
-        color: #fff;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        text-align: center;
-        flex-direction: column;
-        position: relative;
-    }
+  .container { max-width:700px; padding:20px; }
 
-    canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-    }
+  h1.title {
+    font-size: 3em;
+    margin-bottom: 10px;
+    color: #00ffff;
+  }
+  h1.title span { display:block; }
 
-    .container {
-        position: relative;
-        z-index: 1;
-        max-width: 800px;
-        padding: 20px;
-    }
+  .release-date {
+    font-size: 1.3em;
+    margin-bottom: 25px;
+    color: #feca57;
+  }
 
-    .tagline {
-        font-size: 1.5em;
-        font-weight: 500;
-        color: #00ffe0;
-        margin-bottom: 15px;
-        text-shadow: 0 0 10px #00ffe0, 0 0 20px #00ffe0;
-    }
+  .countdown {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 50px; /* space for tagline */
+  }
 
-    h1 {
-        font-size: 3em;
-        margin-bottom: 15px;
-    }
+  .countdown-item { text-align: center; }
 
-    .release-date {
-        font-size: 1.3em;
-        margin-bottom: 25px;
-        color: #00ffff;
-        font-weight: bold;
-    }
+  .countdown-number {
+    font-size: 2em;
+    color: #00ffff;
+    display: block;
+  }
 
-    .countdown {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-    }
+  .countdown-label-icon { display: block; font-size: 1.2em; margin-top: 3px; }
+  .countdown-label-text { display: block; font-size: 0.9em; margin-top: 2px; color:#fff; }
 
-    .countdown .card {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 2rem 1.5rem;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        flex: 1;
-        max-width: 150px;
-        min-width: 120px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+  .tagline {
+    font-size: 1.6em; /* slightly bigger */
+    color: #ff6b6b;
+    margin-bottom: 10px;
+    text-shadow: 0 0 5px #ff6b6b; /* subtle glow */
+  }
 
-    .countdown .card span.number {
-        font-size: 2.5em;
-        font-weight: bold;
-        color: #00ffff;
-        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-    }
-
-    .countdown .card span.label {
-        margin-top: 10px;
-        font-size: 1em;
-        color: #a0a0a0;
-    }
+  footer.footer {
+    font-size: 0.9em;
+    color: rgba(255,255,255,0.7);
+  }
 </style>
 </head>
 <body>
-<canvas id="bgCanvas"></canvas>
+  <div class="container">
+    <header class="titles">
+      <h1 class="title">🔮🪄⏳🚀🎉<span>Something Amazing Is Coming Soon</span></h1>
+      <p class="release-date">Release Date: 5 Nov 2025</p>
+    </header>
 
-<div class="container">
-    <p class="tagline">FIND YOUR VISION. BUILD YOUR EMPIRE. LEAVE YOUR LEGACY.</p>
-    <h1>Coming Soon 🚀</h1>
-    <p class="release-date">Release Date: 5 Nov 2025</p>
-    <div class="countdown" id="countdown">
-        <div class="card"><span class="number" id="days">0</span><span class="label">Days</span></div>
-        <div class="card"><span class="number" id="hours">0</span><span class="label">Hours</span></div>
-        <div class="card"><span class="number" id="minutes">0</span><span class="label">Minutes</span></div>
-        <div class="card"><span class="number" id="seconds">0</span><span class="label">Seconds</span></div>
-    </div>
-</div>
+    <section class="countdown" id="countdown">
+      <div class="countdown-item">
+        <span class="countdown-number" id="days">00</span>
+        <span class="countdown-label-icon">📅</span>
+        <span class="countdown-label-text">Days</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="hours">00</span>
+        <span class="countdown-label-icon">⏰</span>
+        <span class="countdown-label-text">Hours</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="minutes">00</span>
+        <span class="countdown-label-icon">⏱️</span>
+        <span class="countdown-label-text">Minutes</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="seconds">00</span>
+        <span class="countdown-label-icon">💨</span>
+        <span class="countdown-label-text">Seconds</span>
+      </div>
+    </section>
+  </div>
 
-<script>
-    // Countdown timer
+  <!-- Tagline above footer -->
+  <p class="tagline">FIND YOUR VISION. BUILD YOUR EMPIRE. LEAVE YOUR LEGACY.</p>
+
+  <footer class="footer">&copy; 2025 All rights reserved.</footer>
+
+  <script>
+    // Countdown Timer
     const launchDate = new Date("Nov 5, 2025 00:00:00").getTime();
+    setInterval(() => {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
 
-    function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = launchDate - now;
+      const days = Math.floor(distance/(1000*60*60*24));
+      const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+      const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+      const seconds = Math.floor((distance%(1000*60))/1000);
 
-        if(distance < 0) {
-            document.getElementById('days').textContent = 0;
-            document.getElementById('hours').textContent = 0;
-            document.getElementById('minutes').textContent = 0;
-            document.getElementById('seconds').textContent = 0;
-            clearInterval(countdownInterval);
-            return;
-        }
+      document.getElementById("days").innerText = String(days).padStart(2,"0");
+      document.getElementById("hours").innerText = String(hours).padStart(2,"0");
+      document.getElementById("minutes").innerText = String(minutes).padStart(2,"0");
+      document.getElementById("seconds").innerText = String(seconds).padStart(2,"0");
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById('days').textContent = days;
-        document.getElementById('hours').textContent = hours;
-        document.getElementById('minutes').textContent = minutes;
-        document.getElementById('seconds').textContent = seconds;
-    }
-
-    const countdownInterval = setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-    // Techy animated background
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    const particles = [];
-    const particleCount = 100;
-
-    function Particle() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.size = Math.random() * 2 + 1;
-    }
-
-    for(let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-    }
-
-    function animate() {
-        ctx.clearRect(0,0,width,height);
-        for(let i = 0; i < particleCount; i++) {
-            const p = particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-
-            if(p.x < 0 || p.x > width) p.vx *= -1;
-            if(p.y < 0 || p.y > height) p.vy *= -1;
-
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-            ctx.fillStyle = '#00ffff';
-            ctx.fill();
-
-            for(let j=i+1;j<particleCount;j++){
-                const p2 = particles[j];
-                const dx = p.x - p2.x;
-                const dy = p.y - p2.y;
-                const dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist < 100){
-                    ctx.beginPath();
-                    ctx.strokeStyle = 'rgba(0,255,255,0.1)';
-                    ctx.moveTo(p.x,p.y);
-                    ctx.lineTo(p2.x,p2.y);
-                    ctx.stroke();
-                }
-            }
-        }
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize',()=>{
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    });
-</script>
+      if(distance<0){
+        document.getElementById("countdown").innerHTML="We are live!";
+      }
+    },1000);
+  </script>
 </body>
 </html>
